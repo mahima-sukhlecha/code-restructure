@@ -1,0 +1,18 @@
+{
+    "vnetBody" : {
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes":""
+          },
+          "subnets": [
+            {
+              "name": "",
+              "properties": {
+                "addressPrefix": ""
+              }
+            }
+          ]
+        },
+        "location": ""
+    }
+}
