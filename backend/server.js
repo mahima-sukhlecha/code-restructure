@@ -25,9 +25,10 @@ const rgList = require('./utils/RG_List')
 const telemetrystatus = require('./src/Monitoring/telemetryData')
 const addRG = require("../backend/Scripts/ResourceGroup")
 //Import Data ETL Files
-const dataETL = require('./src/DataETL/handler') // Handle all the components in Data ETL Dashboard
-const etlTokens = require('./utils/ETLTokens') // Get Runtime and Storage Account Tokens
-const etlAvailabilityStatus = require('./utils/ETLAvailability') //Check Availability of ETL Components
+var dataEtl = require('./Routers/DataETL')
+// const dataETL = require('./src/DataETL/handler') // Handle all the components in Data ETL Dashboard
+// const etlTokens = require('./utils/ETLTokens') // Get Runtime and Storage Account Tokens
+// const etlAvailabilityStatus = require('./utils/ETLAvailability') //Check Availability of ETL Components
 //Import DevOps Files
 const devops = require('./src/DevOps/handler')
 const devopsAvailabilityState = require('./utils/devOpsStatus')
@@ -80,9 +81,10 @@ const getVnetstate = require('./utils/VnetStatus') //check availabilty of networ
 const infraCheckAvailability = require('./src/Infrastructure/Scripts/ComponentStorage')
 const ipaasCheckAvailability = require('./utils/InfraAvailability')
 
-const user = require('./src/Project-Insights/user')
-const project = require('./src/Project-Insights/project');
-const resource = require('./src/Project-Insights/resource')
+// const user = require('./src/Project-Insights/user')
+// const project = require('./src/Project-Insights/project');
+// const resource = require('./src/Project-Insights/resource')
+var projectInsights = require('./Routers/ProjectInsights')
 const {checkUser} = require('./utils/checkUser')
 
 const roleAssignment = require('./src/Auditing & Logs/roleAssignment')
@@ -145,12 +147,13 @@ app.get('/api/getProfilePhoto',getProfilePhoto)
 app.get('/api/getUserInfo',userList.getUserInfoFromEmail)
 
 //Data ETL
-app.post('/api/fetchdata',dataETL.dataETLHandler) // Deploying ETL Components
-app.post('/api/strtoken',etlTokens.storageAccountKeys) //Get Storage Account Keys
-app.post('/api/runtimetoken',etlTokens.runtimeKeys) // Get Runtime Keys
-app.post('/api/stravailable',etlAvailabilityStatus.storageAvailability) //Check Storage account Availabilty
-app.post('/api/adfstatus',etlAvailabilityStatus.ADFExistence)//Check Storage account Availability
-app.post('/api/sqlserveravailable',etlAvailabilityStatus.sqlserverAvailability) //Check SQL Server Avaialability
+app.use('/api/dataEtl',dataEtl)
+// app.post('/api/fetchdata',dataETL.dataETLHandler) // Deploying ETL Components
+// app.post('/api/strtoken',etlTokens.storageAccountKeys) //Get Storage Account Keys
+// app.post('/api/runtimetoken',etlTokens.runtimeKeys) // Get Runtime Keys
+// app.post('/api/stravailable',etlAvailabilityStatus.storageAvailability) //Check Storage account Availabilty
+// app.post('/api/adfstatus',etlAvailabilityStatus.ADFExistence)//Check Storage account Availability
+// app.post('/api/sqlserveravailable',etlAvailabilityStatus.sqlserverAvailability) //Check SQL Server Avaialability
 
 //Networking Components
 app.post('/api/network-components',nethandler.networkingHandler) // Deploying Networking components
@@ -239,17 +242,18 @@ app.post('/api/deleteURL',assignedUrl.deleteAssignedURLFromDatabase)
 app.get('/api/getURL',assignedUrl.fetchAssignedURLFromDatabase)
 app.post('/api/sendNotification',notification.SendNotification)
 
-//Project-Insights
-app.post('/api/addUser',user.addUser)
-app.post('/api/deleteUser',user.deleteUser)
-app.get('/api/getUser',user.getUser)
-app.post('/api/addProject',project.addProject)
-app.post('/api/deleteProject',project.deleteProject)
-app.get('/api/getProject',project.getProject)
-app.post('/api/addProjectUser',project.addProjectIntoDatabase)
-app.post('/api/addResource',resource.addResource)
-app.post('/api/deleteResource',resource.deleteResource)
-app.post('/api/addResourceUser',resource.addResourceIntoDatabase)
+// //Project-Insights
+app.use('/api/projectInsights',projectInsights)
+// app.post('/api/addUser',user.addUser)
+// app.post('/api/deleteUser',user.deleteUser)
+// app.get('/api/getUser',user.getUser)
+// app.post('/api/addProject',project.addProject)
+// app.post('/api/deleteProject',project.deleteProject)
+// app.get('/api/getProject',project.getProject)
+// app.post('/api/addProjectUser',project.addProjectIntoDatabase)
+// app.post('/api/addResource',resource.addResource)
+// app.post('/api/deleteResource',resource.deleteResource)
+// app.post('/api/addResourceUser',resource.addResourceIntoDatabase)
 //utils
 app.get('/api/checkUser',checkUser)
 
